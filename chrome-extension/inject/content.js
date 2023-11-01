@@ -1,11 +1,18 @@
 async function initSerial() {
   const port = await navigator.serial.requestPort();
+  connect(port);
+}
+var connectButton = 0;
+
+async function connect(port) {
   await port.open({ baudRate: 115200});
   const decoder = new TextDecoderStream();
   port.readable.pipeTo(decoder.writable);
   const inputStream = decoder.readable;
   const reader = inputStream.getReader();
-  connectButton.remove();
+  if(connectButton) {
+    connectButton.remove();
+  }
   while(true) {
       const { value, done } = await reader.read();
       if (value) {
@@ -23,8 +30,16 @@ async function initSerial() {
   }
 }
 
-document.querySelector("nav").innerHTML += '<button id="connect-serial">Connect<button>';
-var connectButton = document.querySelector("#connect-serial");
-connectButton.addEventListener("click", (event) => {
-  initSerial();
-});
+(async() => {
+  const ports = await navigator.serial.getPorts();
+  if(ports && ports[0]) {
+    connect(ports[0]);
+  } else {
+    document.querySelector("nav").innerHTML += '<button id="connect-serial">Connect<button>';
+    var connectButton = document.querySelector("#connect-serial");
+    connectButton.addEventListener("click", (event) => {
+      initSerial();
+    });
+  }
+})();
+
