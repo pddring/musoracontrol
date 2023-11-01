@@ -17,6 +17,11 @@
             "https://www.musora.com/*", "https://www.soundslice.com/*"
         ],
         "all_frames":true
+    }, {
+        "js": ["inject/content.js"],
+        "matches": [
+            "https://www.musora.com/*"
+        ]
     }
   ],
   "permissions": ["activeTab", "scripting"]
