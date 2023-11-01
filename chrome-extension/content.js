@@ -2,7 +2,7 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         success = false;
         try {
-            switch(request) {
+            switch(request.trim()) {
                 case 'play':
                     document.querySelector(".playbutton").dispatchEvent(new Event("mousedown"));
                     break;
@@ -25,9 +25,9 @@ chrome.runtime.onMessage.addListener(
     
             }
         } catch(e) {
-            success = false;
+            success = {error: e};
         }
-        
+        console.log("Handled", request, success);
         sendResponse({success: success});
     }
   );

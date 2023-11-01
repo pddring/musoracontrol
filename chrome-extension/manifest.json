@@ -19,6 +19,7 @@
         "all_frames":true
     }, {
         "js": ["inject/content.js"],
+        "css": ["inject/content.css"],
         "matches": [
             "https://www.musora.com/*"
         ]
