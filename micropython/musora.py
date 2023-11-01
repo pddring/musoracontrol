@@ -1,6 +1,7 @@
 import badger2040
 import jpegdec
 import time
+import machine
 
 badger = badger2040.Badger2040()
 jpeg = jpegdec.JPEG(badger.display)
