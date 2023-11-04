@@ -1,9 +1,11 @@
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+        var player = document.getElementById("ssEmbed").contentWindow;
         success = false;
         try {
             switch(request.trim()) {
                 case 'play':
+                    player.postMessage('{"method": "play"}', "https://www.soundslice.com");
                     document.querySelector(".playbutton").dispatchEvent(new Event("mousedown"));
                     break;
                 
