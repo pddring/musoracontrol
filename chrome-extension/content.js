@@ -6,7 +6,9 @@ chrome.runtime.onMessage.addListener(
             switch(request.trim()) {
                 case 'play':
                     //player.postMessage('{"method": "play"}', "https://www.soundslice.com");
-                    document.querySelector(".playbutton").dispatchEvent(new Event("mousedown"));
+                    document.querySelector("div.mouseland").dispatchEvent(new Event("click"));
+                    document.dispatchEvent(new Event("click"));
+
                     break;
                 
                 case 'previous':
@@ -17,13 +19,13 @@ chrome.runtime.onMessage.addListener(
                     Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Next").parentElement.dispatchEvent(new Event("click"))
                     break;
 
-                case 'bpm-plus':
+                /*case 'bpm-plus':
                     document.querySelector(".speedbut-plus").dispatchEvent(new Event("click"));
                     break;
                 
                 case 'bpm-minus':
                     document.querySelector(".speedbut-minus").dispatchEvent(new Event("click"));
-                    break;
+                    break;*/
     
             }
         } catch(e) {
