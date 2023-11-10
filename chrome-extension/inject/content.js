@@ -10,6 +10,7 @@ async function connect(port) {
   port.readable.pipeTo(decoder.writable);
   const inputStream = decoder.readable;
   const reader = inputStream.getReader();
+  var connectButton = document.querySelector("#connect-serial");
   if(connectButton) {
     connectButton.remove();
   }
