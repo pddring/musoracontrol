@@ -24,7 +24,8 @@ badger.text("Musora Controls", 70, 0)
 badger.text("Previous", 20, 100)
 badger.text("Play/Pause", 120, 100)
 badger.text("Next", 250, 100)
-badger.text("X", 280, 20)
+badger.text("BPM+", 220, 20)
+badger.text("BPM-", 220, 60)
 
 button_a = machine.Pin(badger2040.BUTTON_A, machine.Pin.IN, machine.Pin.PULL_DOWN)
 button_b = machine.Pin(badger2040.BUTTON_B, machine.Pin.IN, machine.Pin.PULL_DOWN)
@@ -36,9 +37,15 @@ button_up = machine.Pin(badger2040.BUTTON_UP, machine.Pin.IN, machine.Pin.PULL_D
 badger.update()
 running = True
 while running:
-    # quit on up or down
-    if button_down.value() or button_up.value():
-        running = False
+    if button_down.value():
+        print("bpm-minus")
+        while button_down.value():
+            time.sleep(0.1)
+        
+    if button_up.value():
+        print("bpm-plus")
+        while button_up.value():
+            time.sleep(0.1)
     
     if button_a.value():
         print("previous")
