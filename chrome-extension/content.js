@@ -1,4 +1,5 @@
 var playVerb = "play";
+var speed = 1;
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         var player = document.getElementById("ssEmbed").contentWindow;
@@ -27,14 +28,16 @@ chrome.runtime.onMessage.addListener(
                     Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Next").parentElement.dispatchEvent(new Event("click"))
                     break;
 
-                /*case 'bpm-plus':
-                    document.querySelector(".speedbut-plus").dispatchEvent(new Event("click"));
+                case 'bpm-plus':
+                    speed += 0.05;
+                    player.postMessage('{"method": "setSpeed", "arg":"' + speed + '"}', "https://www.soundslice.com");
                     break;
                 
                 case 'bpm-minus':
-                    document.querySelector(".speedbut-minus").dispatchEvent(new Event("click"));
-                    break;*/
-                    Errors
+                    speed -= 0.05;
+                    player.postMessage('{"method": "setSpeed", "arg":"' + speed + '"}', "https://www.soundslice.com");
+                    break;
+                    
             }
         } catch(e) {
             success = {error: e};
@@ -45,6 +48,7 @@ chrome.runtime.onMessage.addListener(
   );
 
   window.addEventListener('message', function(event) {
+    console.log(event.data);
     var cmd = JSON.parse(event.data);
     switch (cmd.method) {
         case 'ssPlay':
@@ -52,6 +56,9 @@ chrome.runtime.onMessage.addListener(
             break;
         case 'ssPause':
             playVerb = "play";
+            break;
+        case 'ssSpeed':
+            console.log('Speed is ' + (cmd.arg * 100) + ' percent.');
             break;
     }
 });
