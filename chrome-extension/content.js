@@ -1,6 +1,7 @@
+var playVerb = "play";
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        //var player = document.getElementById("ssEmbed").contentWindow;
+        var player = document.getElementById("ssEmbed").contentWindow;
         success = false;
         try {
             switch(request.trim()) {
@@ -11,9 +12,9 @@ chrome.runtime.onMessage.addListener(
                     }
                     break;
                 case 'play':
-                    //player.postMessage('{"method": "play"}', "https://www.soundslice.com");
-                    document.querySelector("div.mouseland", new Event("mousedown"));
-                    document.querySelector("button.playbutton").dispatchEvent(new Event("mouseup"));
+                    player.postMessage('{"method": "' + playVerb + '"}', "https://www.soundslice.com");
+                    //document.querySelector("div.mouseland", new Event("mousedown"));
+                    //document.querySelector("button.playbutton").dispatchEvent(new Event("mouseup"));
                     
 
                     break;
@@ -42,3 +43,15 @@ chrome.runtime.onMessage.addListener(
         sendResponse({success: success});
     }
   );
+
+  window.addEventListener('message', function(event) {
+    var cmd = JSON.parse(event.data);
+    switch (cmd.method) {
+        case 'ssPlay':
+            playVerb = "pause";
+            break;
+        case 'ssPause':
+            playVerb = "play";
+            break;
+    }
+});
