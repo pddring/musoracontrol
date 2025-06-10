@@ -16,6 +16,14 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("btn-hide-connect").addEventListener("click", function() {
             chrome.tabs.sendMessage(tabs[0].id, "hide-connect");
         });
+
+        document.getElementById("btn-bpm-plus").addEventListener("click", function() {
+            chrome.tabs.sendMessage(tabs[0].id, "bpm-plus");
+        });
+
+        document.getElementById("btn-bpm-minus").addEventListener("click", function() {
+            chrome.tabs.sendMessage(tabs[0].id, "bpm-minus");
+        });
         
 
     });

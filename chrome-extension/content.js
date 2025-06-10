@@ -1,3 +1,17 @@
+function simulateMouseClick(targetNode) {
+    function triggerMouseEvent(targetNode, eventType) {
+        var clickEvent = new Event(eventType, {
+            'view': window,
+            'bubbles': true,
+            'cancelable': true
+        });
+        targetNode.dispatchEvent(clickEvent);
+    }
+    ["mousedown", "mouseup", "click"].forEach(function(eventType) { 
+        triggerMouseEvent(targetNode, eventType);
+    });
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         //var player = document.getElementById("ssEmbed").contentWindow;
@@ -11,10 +25,10 @@ chrome.runtime.onMessage.addListener(
                     }
                     break;
                 case 'play':
-                    //player.postMessage('{"method": "play"}', "https://www.soundslice.com");
-                    document.querySelector("div.mouseland", new Event("mousedown"));
-                    document.querySelector("button.playbutton").dispatchEvent(new Event("mouseup"));
                     
+                    document.querySelector("button.playbutton").dispatchEvent(new Event("mousedown"));
+                    var node = document.querySelector("div.mouseland.sheetmusicel");
+                    simulateMouseClick(node);
 
                     break;
                 
@@ -26,14 +40,13 @@ chrome.runtime.onMessage.addListener(
                     Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Next").parentElement.dispatchEvent(new Event("click"))
                     break;
 
-                /*case 'bpm-plus':
-                    document.querySelector(".speedbut-plus").dispatchEvent(new Event("click"));
+                case 'bpm-plus':
+                    simulateMouseClick(document.querySelector(".speedbut-plus"));
                     break;
                 
                 case 'bpm-minus':
-                    document.querySelector(".speedbut-minus").dispatchEvent(new Event("click"));
-                    break;*/
-                    Errors
+                    simulateMouseClick(document.querySelector(".speedbut-minus"));
+                    break;
             }
         } catch(e) {
             success = {error: e};
