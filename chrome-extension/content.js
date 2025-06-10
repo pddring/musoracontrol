@@ -14,7 +14,7 @@ function simulateMouseClick(targetNode) {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        //var player = document.getElementById("ssEmbed").contentWindow;
+        var player = document.getElementById("ssEmbed").contentWindow;
         success = false;
         try {
             switch(request.trim()) {
@@ -55,3 +55,20 @@ chrome.runtime.onMessage.addListener(
         sendResponse({success: success});
     }
   );
+
+  window.addEventListener('message', function(event) {
+    console.log(event.data);
+    var cmd = JSON.parse(event.data);
+    switch (cmd.method) {
+        case 'ssPlay':
+            playVerb = "pause";
+            break;
+        case 'ssPause':
+            playVerb = "play";
+            break;
+        case 'ssSpeed':
+            console.log('Speed is ' + (cmd.arg * 100) + ' percent.');
+            break;
+    }
+});
+
