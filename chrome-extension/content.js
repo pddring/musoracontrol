@@ -1,4 +1,5 @@
 function simulateMouseClick(targetNode) {
+    if(!targetNode)return;
     function triggerMouseEvent(targetNode, eventType) {
         var clickEvent = new Event(eventType, {
             'view': window,
@@ -14,32 +15,16 @@ function simulateMouseClick(targetNode) {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        var player = document.getElementById("ssEmbed").contentWindow;
-        success = false;
-        try {
+        //debugger;
+        var success = true;
+        if(window.location.href.match(/soundslice\.com/)) {
+
             switch(request.trim()) {
-                case 'hide-connect':
-                    var connectButton = document.querySelector("#connect-serial");
-                    if(connectButton) {
-                        connectButton.remove();
-                    }
-                    break;
                 case 'play':
-                    
-                    document.querySelector("button.playbutton").dispatchEvent(new Event("mousedown"));
-                    var node = document.querySelector("div.mouseland.sheetmusicel");
+                    var node = document.querySelector("button.playbutton");
                     simulateMouseClick(node);
 
                     break;
-                
-                case 'previous':
-                    Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Previous").parentElement.dispatchEvent(new Event("click"))
-                    break;
-                    plus
-                case 'next':
-                    Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Next").parentElement.dispatchEvent(new Event("click"))
-                    break;
-
                 case 'bpm-plus':
                     simulateMouseClick(document.querySelector(".speedbut-plus"));
                     break;
@@ -48,27 +33,23 @@ chrome.runtime.onMessage.addListener(
                     simulateMouseClick(document.querySelector(".speedbut-minus"));
                     break;
             }
-        } catch(e) {
-            success = {error: e};
+        } else {
+            switch(request.trim()) {
+                case 'hide-connect':
+                    var connectButton = document.querySelector("#connect-serial");
+                    if(connectButton) {
+                        connectButton.remove();
+                    }
+                    break;
+                case 'previous':
+                    Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Previous").parentElement.dispatchEvent(new Event("click"))
+                    break;
+               case 'next':
+                    Array.from(document.querySelectorAll('span')).find(el => el.textContent==="Next").parentElement.dispatchEvent(new Event("click"))
+                    break;
+            }
         }
-        console.log("Handled", request, success);
+    
         sendResponse({success: success});
     }
   );
-
-  window.addEventListener('message', function(event) {
-    console.log(event.data);
-    var cmd = JSON.parse(event.data);
-    switch (cmd.method) {
-        case 'ssPlay':
-            playVerb = "pause";
-            break;
-        case 'ssPause':
-            playVerb = "play";
-            break;
-        case 'ssSpeed':
-            console.log('Speed is ' + (cmd.arg * 100) + ' percent.');
-            break;
-    }
-});
-
